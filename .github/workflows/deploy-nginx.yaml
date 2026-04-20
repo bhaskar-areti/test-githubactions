@@ -1,0 +1,32 @@
+name: Deploy nginx via Flux (test-cluster)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, como-app]
+
+    steps:
+      - name: Checkout GitOps repo
+        uses: actions/checkout@v4
+        with:
+          repository: bhaskar-areti/istio-helm-migration
+          token: ${{ secrets.GITOPS_REPO_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+
+      - name: Update nginx manifest
+        run: |
+          cp ../test-githubactions/.k8s/nginx.yaml apps/nginx-test/deployment.yaml
+
+      - name: Commit and push
+        run: |
+          git add apps/nginx-test
+          git commit -m "Deploy nginx to test-cluster via GitHub Actions"
+          git push
