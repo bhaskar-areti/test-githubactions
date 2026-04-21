@@ -10,7 +10,7 @@ jobs:
     runs-on: [self-hosted, como-app]
 
     steps:
-      - name: Checkout test-githubactions repo
+      - name: Checkout test-githubactions-como-pricer repo
         uses: actions/checkout@v4
         with:
           path: app
@@ -18,7 +18,7 @@ jobs:
       - name: Checkout GitOps repo
         uses: actions/checkout@v4
         with:
-          repository: bhaskar-areti/istio-helm-migration
+          repository: bhaskar-areti/Istio-helm-migration-k8s-deployments
           token: ${{ secrets.GITOPS_REPO_TOKEN }}
           path: gitops
 

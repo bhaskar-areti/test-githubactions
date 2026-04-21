@@ -52,11 +52,10 @@ No kubectl from CI or No secrets for the cluster in CI or No Flux logic in the a
 
 ##
 two repositories and what each one does
-# test-githubactions(Ex:como-pricer) as CI / intent like “What I want to deploy”
-# Istio-helm-migration (Ex: K8s-deployemnts) as GitOps / source of truth like “What is deployed in the cluster”
+test-githubactions(Ex:como-pricer) as CI / intent like “What I want to deploy”
+Istio-helm-migration (Ex: K8s-deployemnts) as GitOps / source of truth like “What is deployed in the cluster”
 Flux only watches Istio-helm-migration.
 GitHub Actions only touches Git — never the cluster.
-
 
 # test-githubactions (CI / GitHub Actions repo)
 Only three things matter here for deployments
@@ -67,19 +66,18 @@ test-githubactions/
 │   └── workflows
 │       └── deploy-nginx.yaml   --> DEPLOY workflow
 └── (everything else)
-# .k8s/nginx.yaml -->This is the deployment template.
 
-You edit image tags here --> This file is NOT deployed directly
+.k8s/nginx.yaml -->This is the deployment template.
+We edit image tags here --> This file is NOT deployed directly
 It is copied by GitHub Actions into the GitOps repo
 Think of it as: “Desired deployment content”
 
-# .github/workflows/deploy-nginx.yaml -->This is the only file that connects CI → GitOps.
+ .github/workflows/deploy-nginx.yaml -->This is the only file that connects CI → GitOps.
 What it does:
 
 Runs on ARC runner
 Checks out both repos
-Copies .k8s/nginx.yaml
-Commits to Istio-helm-migration
+Copies .k8s/nginx.yaml and then Commits to Istio-helm-migration
 Pushes to Git
 
 This is the only deployment trigger from GitHub Actions.   If this file doesn’t run, GA is not involved
