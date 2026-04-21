@@ -10,23 +10,31 @@ jobs:
     runs-on: [self-hosted, como-app]
 
     steps:
+      - name: Checkout test-githubactions repo
+        uses: actions/checkout@v4
+        with:
+          path: app
+
       - name: Checkout GitOps repo
         uses: actions/checkout@v4
         with:
           repository: bhaskar-areti/istio-helm-migration
           token: ${{ secrets.GITOPS_REPO_TOKEN }}
+          path: gitops
 
       - name: Configure git
         run: |
+          cd gitops
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
 
       - name: Update nginx manifest
         run: |
-          cp ../test-githubactions/.k8s/nginx.yaml apps/nginx-test/deployment.yaml
+          cp app/.k8s/nginx.yaml gitops/apps/nginx-test/deployment.yaml
 
       - name: Commit and push
         run: |
+          cd gitops
           git add apps/nginx-test
           git commit -m "Deploy nginx to test-cluster via GitHub Actions"
           git push
