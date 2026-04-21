@@ -35,15 +35,16 @@ ARC
   ######
   ARC flow
 
-test-githubactions repo
+test-githubactions (Ex:como-pricer)repo
         ↓
 GitHub Actions (self-hosted ARC runner)
         ↓
-Commit to istio-helm-migration repo
+Commit to istio-helm-migration(Ex: K8s-deployemnts) repo
         ↓
 Flux reconciliation
         ↓
 Kubernetes cluster (gha-test namespace)
+
 GitHub Actions decides when and what to deploy
 Flux decides how and where to deploy
 Git is the only bridge between them
@@ -51,8 +52,8 @@ No kubectl from CI or No secrets for the cluster in CI or No Flux logic in the a
 
 ##
 two repositories and what each one does
-# test-githubactions as CI / intent like “What I want to deploy”
-# Istio-helm-migration as GitOps / source of truth like “What is deployed in the cluster”
+# test-githubactions(Ex:como-pricer) as CI / intent like “What I want to deploy”
+# Istio-helm-migration (Ex: K8s-deployemnts) as GitOps / source of truth like “What is deployed in the cluster”
 Flux only watches Istio-helm-migration.
 GitHub Actions only touches Git — never the cluster.
 
