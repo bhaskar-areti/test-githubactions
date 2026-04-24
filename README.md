@@ -149,4 +149,3 @@ We now have:  Clean separation of CI and CD
 This is exactly how large organisations do Kubernetes deployments safely.
 
 GitHub Actions writes intent → Git commits state → Flux applies state
-
