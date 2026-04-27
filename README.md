@@ -1,17 +1,17 @@
 ARC
 #################
   bhaskar-areti/
-  test-githubactions/
+  test-githubactions-como-pricer/
   │  ├── .k8s
   │  │    ├── nginx.yaml
   │  │  
   │  ├── .github
   │        ├── workflows/
-  │        │    ├── build-test-all.yaml
-  │        │    ├── pr-unit-tests.yaml
-  │        │
-  │        └──-deploy-nginx.yaml 
-  istio-helm-migration
+  │            ├── deploy-nginx.yaml
+  │        
+  │        
+  │      
+ Istio-helm-migration-k8s-deployments
   ├── clusters/
   │      └── test-cluster/
   │             └── flux-system/
@@ -21,17 +21,24 @@ ARC
   │             │
   │             └── trivy-operator.yml
   │             └── github-runners-test.yml
-  │             └── istio1.25.5
+  │             └── github-actions-runner.yaml
   ├── apps/
   │   ├── github-runners-test
   │   │   ├── repository-runner.yaml
-  │   │   ├── test-pda-api-runner.yaml
+  │   │   ├── test-githubactions-runner.yaml
   │   ├── nginx-test/
   │      ├── deployment.yaml
   │      ├── service.yaml
   │      └── kustomization.yaml
   │  
   └── infrastructure/
+        ├── github-actions-runner-test
+        |        ├── github-actions-runner.yaml
+        |        └── kustomization.yaml
+        ├── sources
+              └── github-actions-runner.yaml
+
+
   ######
   ARC flow
 
@@ -149,3 +156,32 @@ We now have:  Clean separation of CI and CD
 This is exactly how large organisations do Kubernetes deployments safely.
 
 GitHub Actions writes intent → Git commits state → Flux applies state
+Istio-helm-migration-k8s-deployments/  
+├── clusters/  
+│   └── test-cluster/  
+│       └── flux-system/  
+│           ├── kustomization.yaml  
+│           ├── gotk-sync.yaml  
+│           └── gotk-components.yaml  
+│       └── arc-v2-system/           # NEW: V2 controller namespace  
+│           ├── kustomization.yaml  
+│           └── gha-runner-scale-set-controller.yaml  
+│       └── arc-v2-runners/          # NEW: V2 runners namespace    
+│           ├── kustomization.yaml  
+│           └── gha-runner-scale-set.yaml  
+├── apps/  
+│   ├── github-runners-v1/           # KEEP: Existing V1 (green)  
+│   │   ├── repository-runner.yaml  
+│   │   ├── test-githubactions-runner.yaml  
+│   │   └── kustomization.yaml  
+│   └── github-runners-v2/           # NEW: V2 (blue)  
+│       ├── repository-runner-v2.yaml  
+│       ├── test-githubactions-runner-v2.yaml  
+│       └── kustomization.yaml  
+└── infrastructure/  
+    ├── github-actions-runner-v1/     # KEEP: Existing V1  
+    │   ├── github-actions-runner.yaml  
+    │   └── kustomization.yaml  
+    └── github-actions-runner-v2/     # NEW: V2  
+        ├── github-actions-runner-v2.yaml  
+        └── kustomization.yaml  
