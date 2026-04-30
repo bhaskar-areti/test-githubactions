@@ -1,0 +1,14 @@
+
+name: ARC v2 Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: arc-v2
+    steps:
+      - name: Hello
+        run: |
+          echo "Running on ARC v2"
+          env | sort
