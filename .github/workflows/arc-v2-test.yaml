@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    runs-on: arc-v2
+    runs-on: [self-hosted, arc-v2]
     steps:
       - name: Hello
         run: |
